@@ -23,8 +23,8 @@ class HTMLNode():
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag, value):
-        super().__init__(tag, value)
+    def __init__(self, tag, value, props=None):
+        super().__init__(tag, value, None, props)
         self.children = None
 
     def to_html(self):
@@ -32,7 +32,10 @@ class LeafNode(HTMLNode):
             raise ValueError
         if self.tag == None:
             return self.value
-        return f"<{self.tag}>{self.value}</{self.tag}>"
+        
+        props_html = self.props_to_html()
+
+        return f"<{self.tag}{props_html}>{self.value}</{self.tag}>"
     
 
 
@@ -54,3 +57,5 @@ class ParentNode(HTMLNode):
         
         final_string = "".join(children_html)
         return f"<{self.tag}>{final_string}</{self.tag}>"
+
+        

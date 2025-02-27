@@ -53,9 +53,9 @@ class TestLeafNode(unittest.TestCase):
 
     def test_leaf_to_html_with_props_ignored(self):
         # If props exist, they should not interfere
-        node = LeafNode("span", "Test")
+        node = LeafNode("span", "Test", {"class": "highlight"})
         node.props = {"class": "highlight"}  # Set props manually
-        self.assertEqual(node.to_html(), "<span>Test</span>")
+        self.assertEqual(node.to_html(), '<span class="highlight">Test</span>')
         # Ensure props do not influence LeafNode's to_html behavior
 
 
