@@ -1,5 +1,5 @@
 import unittest
-from textnode import TextType, TextNode
+from textnode import *
 from splitters import *
 
 class TestSplitNodesDelimiter(unittest.TestCase):
@@ -142,6 +142,39 @@ class TestSplitNodesDelimiter(unittest.TestCase):
             new_nodes,
         )
 
+
+    def test_mixed_formatting(self):
+        text = "This is **bold** and _italic_ text"
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("bold", TextType.BOLD),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" text", TextType.TEXT)
+        ]
+        actual = text_to_textnodes(text)
+        self.assertEqual(len(expected), len(actual))
+        for i, node in enumerate(actual):
+            self.assertEqual(expected[i].text, node.text)
+            self.assertEqual(expected[i].text_type, node.text_type)
+            self.assertEqual(expected[i].url, node.url)
+    
+    def test_complex_formatting(self):
+        text = "Here's a [link](https://example.com) and an ![image](https://example.com/image.jpg) and `code`"
+        expected = [
+            TextNode("Here's a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://example.com"),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("image", TextType.IMAGE, "https://example.com/image.jpg"),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("code", TextType.CODE),
+        ]
+        actual = text_to_textnodes(text)
+        self.assertEqual(len(expected), len(actual))
+        for i, node in enumerate(actual):
+            self.assertEqual(expected[i].text, node.text)
+            self.assertEqual(expected[i].text_type, node.text_type)
+            self.assertEqual(expected[i].url, node.url)
 
 if __name__ == "__main__":
     unittest.main()
