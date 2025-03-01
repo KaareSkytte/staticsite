@@ -6,7 +6,4 @@ def main():
     print(node)
 
 
-
-
-if __name__ == "__main__":
-    main()
+main()
